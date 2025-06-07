@@ -28,26 +28,31 @@ This project was developed over approximately 5 hours, exceeding the initial 2-3
 
 ## Local Development Setup
 
-1. **Environment Setup**
+1. Clone the repository:
+```bash
+git clone https://github.com/creativenux/localization-management-api.git
+```
+
+2. **Environment Setup**
    ```bash
    # Create and activate virtual environment
    python -m venv venv
    source venv/bin/activate  # On Windows use `venv\Scripts\activate`
    ```
 
-2. **Install Dependencies**
+3. **Install Dependencies**
    ```bash
    pip3 install -r requirements.txt
    ```
 
-3. **Environment Variables**
+4. **Environment Variables**
    Create a `.env` file in the root directory with:
    ```
    SUPABASE_URL=your_supabase_url
    SUPABASE_KEY=your_supabase_secret_key # NOT anon key
    ```
 
-4. **Run the Server**
+5. **Run the Server**
    ```bash
    uvicorn src.localization_management_api.main:app --reload
    ```
