@@ -63,6 +63,8 @@ git clone https://github.com/creativenux/localization-management-api.git
 Once the server is running, you can access:
 - Interactive API documentation: `http://127.0.0.1:8000/docs`
 - Alternative API documentation: `http://127.0.0.1:8000/redoc`
+- Deployed API: [https://localization-management-api.onrender.com](https://localization-management-api.onrender.com) 
+- Deployed API documentation: [https://localization-management-api.onrender.com/docs](https://localization-management-api.onrender.com/docs) 
 
 ## Testing
 

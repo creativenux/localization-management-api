@@ -21,6 +21,11 @@ app.add_middleware(
 localization_manager = LocalizationManager()
 
 # Get all projects
+@app.get("/")
+async def index():
+    return {"message": "Welcome to the Localization Management API"}
+
+# Get all projects
 @app.get("/projects", response_model=List[Project])
 async def get_projects():
     response = localization_manager.get_projects()
