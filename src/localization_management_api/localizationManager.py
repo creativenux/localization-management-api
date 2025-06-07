@@ -36,7 +36,7 @@ class LocalizationManager:
             "translations": translations_dict
         }).execute()
 
-    def update_localization(self, id: str, project_id: str, key: str, category: str, description: str | None, translations: dict):
+    def update_localization(self, id: str, project_id: str, translations: dict):
         # Convert Translation objects to dictionaries
         translations_dict = {
             lang: {
@@ -48,9 +48,6 @@ class LocalizationManager:
         }
         
         return self.client.table("localizations").update({
-            "key": key,
-            "category": category,
-            "description": description,
             "translations": translations_dict
         }).eq("id", id).eq("project_id", project_id).execute()
 

@@ -23,6 +23,26 @@ uvicorn src.localization_management_api.main:app --reload
 
 The API will be available at `http://127.0.0.1:8000`.
 
+## Running Tests
+
+To run the test suite, use the following command:
+
+```bash
+pytest
+```
+
+For more detailed test output, you can use:
+
+```bash
+pytest -v
+```
+
+To see test coverage report:
+
+```bash
+pytest --cov=src
+```
+
 ### Example Usage
 
 To get localizations for a project, you can access:

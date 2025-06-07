@@ -2,11 +2,21 @@ from dotenv import load_dotenv
 load_dotenv()
 
 from fastapi import FastAPI, HTTPException
+from fastapi.middleware.cors import CORSMiddleware
 from typing import List
 from .localizationManager import LocalizationManager
-from .models import Project, ProjectCreate, Localization, Language, LanguageCreate, LocalizationCreate
+from .models import Project, ProjectCreate, Localization, Language, LanguageCreate, LocalizationCreate, LocalizationUpdate
 
 app = FastAPI()
+
+# Configure CORS
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # Allows all origins
+    allow_credentials=True,
+    allow_methods=["*"],  # Allows all methods
+    allow_headers=["*"],  # Allows all headers
+)
 
 localization_manager = LocalizationManager()
 
@@ -62,15 +72,10 @@ async def create_localization(project_id: str, localization: LocalizationCreate)
     return response.data[0]
 
 @app.put("/localizations/{project_id}/{localization_id}", response_model=Localization)
-async def update_localization(project_id: str, localization_id: str, localization: LocalizationCreate):
-    if not localization.key or not localization.category:
-        raise HTTPException(status_code=400, detail="Key and category are required")
+async def update_localization(project_id: str, localization_id: str, localization: LocalizationUpdate):
     response = localization_manager.update_localization(
         id=localization_id,
         project_id=project_id,
-        key=localization.key,
-        category=localization.category,
-        description=localization.description,
         translations=localization.translations
     )
     if not response.data:

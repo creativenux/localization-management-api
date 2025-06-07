@@ -26,6 +26,9 @@ class LocalizationBase(BaseModel):
 class LocalizationCreate(LocalizationBase):
     pass
 
+class LocalizationUpdate(BaseModel):
+    translations: dict[str, Translation]
+
 class Localization(LocalizationBase):
     id: int
     project_id: str
