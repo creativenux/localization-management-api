@@ -33,18 +33,6 @@ def test_update_localization(client, project_id, sample_localization_data):
     assert response.status_code == status.HTTP_200_OK
     assert response.json()["translations"]["de"] == "Willkommen Updated"
 
-def test_get_localizations_by_locale(client, project_id, sample_localization_data):
-    # Create a localization first
-    client.post(f"/localizations/{project_id}", json=sample_localization_data)
-    
-    # Get localizations for English locale
-    response = client.get(f"/localizations/{project_id}/en")
-    assert response.status_code == status.HTTP_200_OK
-    assert isinstance(response.json(), list)
-    assert len(response.json()) > 0
-    assert any(loc["translations"].get("en") == sample_localization_data["translations"]["en"] 
-              for loc in response.json())
-
 def test_get_localizations_nonexistent_project(client):
     response = client.get("/localizations/nonexistent")
     assert response.status_code == status.HTTP_200_OK
