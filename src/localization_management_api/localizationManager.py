@@ -1,5 +1,6 @@
 import os
 from supabase import create_client, Client
+from typing import List
 
 class LocalizationManager:
     def __init__(self):
@@ -50,6 +51,27 @@ class LocalizationManager:
         return self.client.table("localizations").update({
             "translations": translations_dict
         }).eq("id", id).eq("project_id", project_id).execute()
+
+    def batch_update_localizations(self, project_id: str, localizations: List[dict]):
+        updates = []
+        for loc in localizations:
+            # Convert Translation objects to dictionaries
+            translations_dict = {
+                lang: {
+                    "value": trans.value,
+                    "updated_at": trans.updated_at,
+                    "updated_by": trans.updated_by
+                }
+                for lang, trans in loc['translations'].items()
+            }
+            
+            updates.append({
+                "id": loc['id'],
+                "translations": translations_dict
+            })
+        
+        # Use upsert to update multiple records
+        return self.client.table("localizations").upsert(updates).eq("project_id", project_id).execute()
 
     def get_localizations(self, project_id: str):
         return self.client.table("localizations").select("*").eq("project_id", project_id).execute()

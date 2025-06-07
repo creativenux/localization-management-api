@@ -5,7 +5,7 @@ from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from typing import List
 from .localizationManager import LocalizationManager
-from .models import Project, ProjectCreate, Localization, Language, LanguageCreate, LocalizationCreate, LocalizationUpdate
+from .models import Project, ProjectCreate, Localization, Language, LanguageCreate, LocalizationCreate, LocalizationUpdate, BatchLocalizationUpdate
 
 app = FastAPI()
 
@@ -85,4 +85,14 @@ async def update_localization(project_id: str, localization_id: str, localizatio
 @app.get("/localizations/{project_id}", response_model=List[Localization])
 async def get_localizations(project_id: str):
     response = localization_manager.get_localizations(project_id)
+    return response.data
+
+@app.put("/localizations/{project_id}/batch", response_model=List[Localization])
+async def batch_update_localizations(project_id: str, updates: BatchLocalizationUpdate):
+    response = localization_manager.batch_update_localizations(
+        project_id=project_id,
+        localizations=updates.localizations
+    )
+    if not response.data:
+        raise HTTPException(status_code=404, detail="No localizations were updated")
     return response.data
