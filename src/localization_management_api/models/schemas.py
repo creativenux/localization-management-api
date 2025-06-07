@@ -1,5 +1,5 @@
 from pydantic import BaseModel
-from typing import List
+from typing import List, Dict
 
 class ProjectBase(BaseModel):
     name: str
@@ -30,8 +30,12 @@ class LocalizationCreate(LocalizationBase):
 class LocalizationUpdate(BaseModel):
     translations: dict[str, Translation]
 
+class LocalizationItem(BaseModel):
+    id: int
+    translations: Dict[str, Translation]
+
 class BatchLocalizationUpdate(BaseModel):
-    localizations: List[dict[str, str | dict[str, Translation]]]  # List of dicts with id and translations
+    localizations: List[LocalizationItem]
 
 class Localization(LocalizationBase):
     id: int

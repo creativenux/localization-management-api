@@ -62,16 +62,17 @@ class LocalizationManager:
                     "updated_at": trans.updated_at,
                     "updated_by": trans.updated_by
                 }
-                for lang, trans in loc['translations'].items()
+                for lang, trans in loc.translations.items()
             }
             
             updates.append({
-                "id": loc['id'],
+                "id": loc.id,
+                "project_id": project_id,
                 "translations": translations_dict
             })
         
         # Use upsert to update multiple records
-        return self.client.table("localizations").upsert(updates).eq("project_id", project_id).execute()
+        return self.client.table("localizations").upsert(updates).execute()
 
     def get_localizations(self, project_id: str):
         return self.client.table("localizations").select("*").eq("project_id", project_id).execute()

@@ -71,6 +71,18 @@ async def create_localization(project_id: str, localization: LocalizationCreate)
         raise HTTPException(status_code=400, detail="Failed to create localization")
     return response.data[0]
 
+
+@app.put("/localizations/{project_id}/batch", response_model=List[Localization])
+async def batch_update_localizations(project_id: str, updates: BatchLocalizationUpdate):
+    print('Received updates:', updates.model_dump())
+    response = localization_manager.batch_update_localizations(
+        project_id=project_id,
+        localizations=updates.localizations
+    )
+    if not response.data:
+        raise HTTPException(status_code=404, detail="No localizations were updated")
+    return response.data
+
 @app.put("/localizations/{project_id}/{localization_id}", response_model=Localization)
 async def update_localization(project_id: str, localization_id: str, localization: LocalizationUpdate):
     response = localization_manager.update_localization(
@@ -85,14 +97,4 @@ async def update_localization(project_id: str, localization_id: str, localizatio
 @app.get("/localizations/{project_id}", response_model=List[Localization])
 async def get_localizations(project_id: str):
     response = localization_manager.get_localizations(project_id)
-    return response.data
-
-@app.put("/localizations/{project_id}/batch", response_model=List[Localization])
-async def batch_update_localizations(project_id: str, updates: BatchLocalizationUpdate):
-    response = localization_manager.batch_update_localizations(
-        project_id=project_id,
-        localizations=updates.localizations
-    )
-    if not response.data:
-        raise HTTPException(status_code=404, detail="No localizations were updated")
     return response.data
